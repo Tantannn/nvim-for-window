@@ -945,7 +945,7 @@ require("catppuccin").setup({
       numbers = {},
       booleans = { "italic" },
       properties = {},
-      types = {},
+      types = { "italic" },
       operators = {},
   },
   color_overrides = {},
