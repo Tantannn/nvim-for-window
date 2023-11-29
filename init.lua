@@ -153,18 +153,16 @@ require('lazy').setup({
 
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
   },
 
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
+  { 
+    "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}
   },
-
+  
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim',
     dependencies = {
@@ -512,6 +510,9 @@ require('lazy').setup({
 
   -- {'OmniSharp/omnisharp-vim'},
   -- {'Hoffs/omnisharp-extended-lsp.nvim'},
+
+    -- Swap
+  {'mizlan/iswap.nvim'},
 
   { import = 'custom.plugins' },
 }, {})
@@ -938,7 +939,7 @@ require("catppuccin").setup({
       comments = { "italic" }, -- Change the style of comments
       conditionals = { "italic" },
       loops = { "italic" },
-      functions = { "italic" },
+      functions = {},
       keywords = {},
       strings = {},
       variables = {},
@@ -956,6 +957,7 @@ require("catppuccin").setup({
       nvimtree = true,
       treesitter = true,
       notify = false,
+      indent_blankline = true,
       mini = {
           enabled = true,
           indentscope_color = "",
@@ -966,6 +968,12 @@ require("catppuccin").setup({
 
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
+
+-- Highlight row number
+vim.api.nvim_set_hl(0, 'LineNrAbove', { fg='#4f4f4f'})
+vim.api.nvim_set_hl(0, 'LineNr', { fg='#CC7722', bold=true })
+vim.api.nvim_set_hl(0, 'LineNrBelow', { fg='#4f4f4f'})
+
 
 require'barbar'.setup {
   auto_hide = false,
@@ -1616,8 +1624,53 @@ require'marks'.setup {
   mappings = {}
 }
 
+-- switch
 vim.g.switch_custom_definitions = {
   { '0', '1' }
+}
+
+--swap
+require('iswap').setup{
+  -- The keys that will be used as a selection, in order
+  -- ('asdfghjklqwertyuiopzxcvbnm' by default)
+  keys = 'qwertyuiop',
+
+  -- Grey out the rest of the text when making a selection
+  -- (enabled by default)
+  grey = 'disable',
+
+  -- Highlight group for the sniping value (asdf etc.)
+  -- default 'Search'
+  hl_snipe = 'ErrorMsg',
+
+  -- Highlight group for the visual selection of terms
+  -- default 'Visual'
+  hl_selection = 'WarningMsg',
+
+  -- Highlight group for the greyed background
+  -- default 'Comment'
+  hl_grey = 'LineNr',
+
+  -- Post-operation flashing highlight style,
+  -- either 'simultaneous' or 'sequential', or false to disable
+  -- default 'sequential'
+  flash_style = false,
+
+  -- Highlight group for flashing highlight afterward
+  -- default 'IncSearch'
+  hl_flash = 'ModeMsg',
+
+  -- Move cursor to the other element in ISwap*With commands
+  -- default false
+  move_cursor = true,
+
+  -- Automatically swap with only two arguments
+  -- default nil
+  autoswap = true,
+
+  -- Other default options you probably should not change:
+  debug = nil,
+  hl_grey_priority = '1000',
 }
 
 -- telescope picker/ resume
