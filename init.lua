@@ -40,6 +40,8 @@ I hope you enjoy your Neovim journey,
 --  Map your Ctrl to Caplock
 -- vim.g.OmniSharp_server_stdio = 0
 -- vim.g.OmniSharp_server_use_mono = 1
+vim.g.OmniSharp_highlighting = 0
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
