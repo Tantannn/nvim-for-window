@@ -40,10 +40,10 @@ I hope you enjoy your Neovim journey,
 --  Map your Ctrl to Caplock
 -- vim.g.OmniSharp_server_stdio = 0
 -- vim.g.OmniSharp_server_use_mono = 1
-vim.g.OmniSharp_highlighting = 0
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+-- enable XAML
+vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"},{ pattern = {"*.xaml"}, command = "setf xml" })
 
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
@@ -512,7 +512,7 @@ require('lazy').setup({
 
   -- {'OmniSharp/omnisharp-vim'},
   -- {'Hoffs/omnisharp-extended-lsp.nvim'},
-  {'OmniSharp/omnisharp-vim'},
+
     -- Swap
   {'mizlan/iswap.nvim'},
 
@@ -555,6 +555,8 @@ vim.o.smartcase = true
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -782,7 +784,7 @@ local servers = {
   -- gopls = {},
   pyright = {},
   rust_analyzer = {},
-  omnisharp = {},
+  -- omnisharp = {},
   tsserver = {},
 
   lua_ls = {
@@ -792,12 +794,13 @@ local servers = {
     },
   },
 }
--- vim.g.OmniSharp_server_path = '"C:\\Users\\Admi\\AppData\\Local\\nvim-data\\mason\\packages\\omnisharp\\libexec\\OmniSharp.exe"'
+
 -- local pid = vim.fn.getpid()
 -- -- On linux/darwin if using a release build, otherwise under scripts/OmniSharp(.Core)(.cmd)
 -- local omnisharp_bin = "C:/Users/Admin/AppData/Local/omnisharp-vim/omnisharp-roslyn/OmniSharp.exe"
 -- -- on Windows
 -- -- local omnisharp_bin = "/path/to/omnisharp/OmniSharp.exe"
+
 -- local config = {
 --   handlers = {
 --     ["textDocument/definition"] = require('omnisharp_extended').handler,
@@ -913,10 +916,51 @@ cmp.setup.cmdline(':', {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-require('onedark').setup {
-  style = 'darker'
-}
 
+require('onedark').setup  {
+  -- Main options --
+  style = 'darker', -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+  transparent = false,  -- Show/hide background
+  term_colors = true, -- Change terminal color as per the selected theme style
+  ending_tildes = false, -- Show the end-of-buffer tildes. By default they are hidden
+  cmp_itemkind_reverse = false, -- reverse item kind highlights in cmp menu
+
+  -- -- toggle theme style ---
+  -- toggle_style_key = nil, -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
+  -- toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
+
+  -- Change code style ---
+  -- Options are italic, bold, underline, none
+  -- You can configure multiple style with comma separated, For e.g., keywords = 'italic,bold'
+  code_style = {
+      comments = 'italic',
+      keywords = 'none',
+      functions = 'none',
+      strings = 'none',
+      variables = 'none',
+      types = "italic",
+      booleans = "italic",
+      loops = "italic",
+      conditionals = "italic",
+
+  },
+
+  -- Lualine options --
+  lualine = {
+      transparent = false, -- lualine center bar transparency
+  },
+
+  -- Custom Highlights --
+  colors = {}, -- Override default colors
+  highlights = {}, -- Override highlight groups
+
+  -- Plugins Config --
+  diagnostics = {
+      darker = true, -- darker colors for diagnostic
+      undercurl = true,   -- use undercurl instead of underline for diagnostics
+      background = true,    -- use background color for virtual text
+  },
+}
 require('onedark').load()
 
 -- require("catppuccin").setup({
@@ -925,7 +969,7 @@ require('onedark').load()
 --       light = "latte",
 --       dark = "mocha",
 --   },
---   transparent_background = false, -- disables setting the background color.
+--   transparent_background = true, -- disables setting the background color.
 --   show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
 --   term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
 --   dim_inactive = {
@@ -950,8 +994,8 @@ require('onedark').load()
 --       types = { "italic" },
 --       operators = {},
 --   },
---   color_overrides = {},
---   custom_highlights = {},
+--   -- color_overrides = {},
+--   -- custom_highlights = {},
 --   integrations = {
 --       cmp = true,
 --       gitsigns = true,
@@ -969,12 +1013,6 @@ require('onedark').load()
 
 -- setup must be called before loading
 -- vim.cmd.colorscheme "catppuccin"
-
--- Highlight row number
-vim.api.nvim_set_hl(0, 'LineNrAbove', { fg='#4f4f4f'})
-vim.api.nvim_set_hl(0, 'LineNr', { fg='#CC7722', bold=true })
-vim.api.nvim_set_hl(0, 'LineNrBelow', { fg='#4f4f4f'})
-
 
 require'barbar'.setup {
   auto_hide = false,
@@ -1673,5 +1711,10 @@ require('iswap').setup{
   debug = nil,
   hl_grey_priority = '1000',
 }
+
+-- Highlight row number
+-- vim.api.nvim_set_hl(0, 'LineNrAbove', { fg='#4f4f4f'})
+-- vim.api.nvim_set_hl(0, 'CursorLineNr', { fg='#CC7722', bold=true })
+-- vim.api.nvim_set_hl(0, 'LineNrBelow', { fg='#4f4f4f'})
 
 -- telescope picker/ resume
